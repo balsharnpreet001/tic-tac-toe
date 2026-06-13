@@ -32,7 +32,7 @@ const checkWin = ()=>{
             document.querySelector(".info").innerText = boxtext[e[0]].innerText + " Won🥳"
             
             gameOver = true; 
-            gameover.play();
+            draw.play();
 
             setTimeout(()=>{
                 reset();
@@ -64,7 +64,7 @@ Array.from(boxes).forEach(element =>{
 
         if(filled===9 && !gameOver){
             document.querySelector(".info").innerText = "Game draw !";
-            draw.play();
+            gameover.play();
 
             setTimeout(()=>{
                 reset();
