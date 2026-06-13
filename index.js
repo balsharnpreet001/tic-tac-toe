@@ -2,6 +2,7 @@ console.log("welcome to tic tac toe")
 
 let audioTurn = new Audio("ting.sound.mp3")
 let gameover = new Audio("game.over.mp3")
+let draw = new Audio("draw.mp3")
 let turn = "X"
 let gameOver = false;
 
@@ -10,6 +11,7 @@ const changeTurn = ()=>{
 }
 
 const checkWin = ()=>{
+
     let boxtext = document.getElementsByClassName('boxtext');
     let wins = [
         [0,1,2,5,5,0],
@@ -30,6 +32,11 @@ const checkWin = ()=>{
             document.querySelector(".info").innerText = boxtext[e[0]].innerText + " Won🥳"
             
             gameOver = true; 
+            gameover.play();
+
+            setTimeout(()=>{
+                reset();
+            }, 3000);
 
             document.querySelector(".line").style.transform = `translate(${e[3]}vw , ${e[4]}vw) rotate(${e[5]}deg)`
             document.querySelector(".line").style.width = "20vw";
@@ -39,6 +46,7 @@ const checkWin = ()=>{
 }
 
 let boxes = document.getElementsByClassName("box");
+let filled = 0;
 Array.from(boxes).forEach(element =>{
     let boxtext = element.querySelector('.boxtext');
     element.addEventListener("click" ,()=>{
@@ -47,25 +55,41 @@ Array.from(boxes).forEach(element =>{
             turn = changeTurn();
             audioTurn.currentTime = 0;
             audioTurn.play();
-            wins = checkWin();
+            checkWin();
+            filled++;
 
         if(!gameOver){
             document.querySelector(".info").innerText = "Turn for " + turn;
         }
 
+        if(filled===9 && !gameOver){
+            document.querySelector(".info").innerText = "Game draw !";
+            draw.play();
+
+            setTimeout(()=>{
+                reset();
+            } , 2000);
+
+        }
+
         }
     })
 })
-
-reset.addEventListener("click", ()=>{
+function reset(){
     let boxtext = document.querySelectorAll(".boxtext")
     Array.from(boxtext).forEach(element => {
         element.innerText = ""
     });
     turn = "X";
     gameOver = false;
+    filled = 0;
     document.querySelector(".line").style.width = "0vw";
     if(!gameOver){
         document.querySelector(".info").innerText = "Turn for " + turn;
     }
-})
+}
+
+let resetBtn = document.getElementById("reset");
+resetBtn.addEventListener("click",()=>{
+    reset();
+});
